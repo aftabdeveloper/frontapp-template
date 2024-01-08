@@ -1,10 +1,9 @@
 const express = require("express")
 const router = express.Router()
+const store = require("../controller/company.controller")
 
 router.post("/",(req,res)=>{
-    res.json({
-        message: req.body
-    })
+   return store(req,res)
 })
 
 module.exports = router
