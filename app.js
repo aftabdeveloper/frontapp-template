@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const indexRoute = require("./routes/index.routes")
 const signupRoute = require("./routes/signup.routes")
+const companyRoute = require("./routes/company.routes")
 const multer = require("multer")
 const multipart = multer().none()
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/",indexRoute)
 app.use("/api/signup",signupRoute)
+app.use("/api/private/company", companyRoute)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

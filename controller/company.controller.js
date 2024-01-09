@@ -1,10 +1,10 @@
 require("../modules/db.modules")
 const Company = require("../model/company.model")
 
-const store = async (req,res)=>{
+const create = async (req,res)=>{
     try
     {
-        const company = new Company(req.body)
+        const company = new Company(req)
         await company.save()
         res.status(200).json(company)
     }
@@ -13,4 +13,6 @@ const store = async (req,res)=>{
         res.status(500).json(err)
     }
 }
- module.exports = store
+ module.exports = {
+    create: create
+ }
