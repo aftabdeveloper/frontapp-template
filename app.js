@@ -6,6 +6,7 @@ const logger = require('morgan');
 const indexRoute = require("./routes/index.routes")
 const signupRoute = require("./routes/signup.routes")
 const companyRoute = require("./routes/company.routes")
+const tokenServices = require("./services/token.service")
 const multer = require("multer")
 const multipart = multer().none()
 const app = express();
@@ -23,6 +24,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/",indexRoute)
 app.use("/api/signup",signupRoute)
+
+// handle security before entry data to database
+app.use((req,res,next)=>{
+  const tmp = tokenServices.verifyToken(req)
+  if(tmp.isVerified) {
+    next()
+  }
+  else{
+    res.status(401).json({
+      message: 'Permission denied'
+    })
+  }
+})
 app.use("/api/private/company", companyRoute)
 
 // catch 404 and forward to error handler

@@ -25,31 +25,33 @@ const companySchema = new Schema({
     }
 })
 
-companySchema.pre("save", async function(next){
-    const query = {
-        company_name: this.company_name
-    }
-    const counts = await mongoose.model('Company').countDocuments(query)
-    if(counts > 0) {
-        res.status(409).send("Company already exists")
-    }
-    else{
-        next()
-    }
-})
+ companySchema.pre("save", async function(next){
+     const query = {
+         company_name: this.company_name
+     }
+     const counts = await mongoose.model('Company').countDocuments(query)
+     if(counts > 0) {
+         res.status(409).json({
+            message: "Company already exists"
+         })
+     }
+     else{
+         next()
+     }
+ })
 
-companySchema.pre("save", async function(next){
-    const query = {
-        email: this.email
-    }
-    const counts = await mongoose.model('Company').countDocuments(query)
-    if(counts > 0) {
-        res.status(409).send("Email already exists")
-    }
-    else{
-        next()
-    }
-})
+ companySchema.pre("save", async function(next){
+     const query = {
+         email: this.email
+     }
+     const counts = await mongoose.model('Company').countDocuments(query)
+     if(counts > 0) {
+         res.status(409).send("Email already exists")
+     }
+     else{
+         next()
+     }
+ })
 
 const Company = mongoose.model("Company", companySchema)
 module.exports = Company
