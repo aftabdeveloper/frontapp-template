@@ -6,6 +6,7 @@ const logger = require('morgan');
 const indexRoute = require("./routes/index.routes")
 const signupRoute = require("./routes/signup.routes")
 const companyRoute = require("./routes/company.routes")
+const userRoute = require("./routes/user.routes")
 const tokenServices = require("./services/token.service")
 const multer = require("multer")
 const multipart = multer().none()
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/",indexRoute)
 app.use("/api/signup",signupRoute)
+app.use("/api/private/user",userRoute)
 
 // handle security before entry data to database
 app.use((req,res,next)=>{
@@ -38,6 +40,7 @@ app.use((req,res,next)=>{
   }
 })
 app.use("/api/private/company", companyRoute)
+app.use("/api/private/user",userRoute)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

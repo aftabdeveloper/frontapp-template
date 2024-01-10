@@ -15,6 +15,18 @@ const createToken = (req,expiresIn)=>{
     return token
 }
 
+const createCustomToken = (req,data,expiresIn)=>{
+    const formData = data.body
+    const endpoint = req.get('origin')
+    const api = req.originalUrl;
+    const iss = endpoint+api
+    const token = jwt.sign({
+        iss: iss,
+        data: formData
+    },secretKey,{expiresIn: expiresIn})
+    return token
+}
+
 const verifyToken = (req)=>{
     const {token} = req.body
     try
@@ -46,5 +58,6 @@ const verifyToken = (req)=>{
 
 module.exports = {
     createToken: createToken,
+    createCustomToken: createCustomToken,
     verifyToken: verifyToken
 }
