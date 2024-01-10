@@ -3,7 +3,7 @@ const router = express.Router()
 const tokenServices = require("../services/token.service")
 const httpServices = require("../services/http.service")
 
-router.post("/", (req,res)=>{
+router.post("/", async (req,res)=>{
    const expiresIn = 120
    const token = tokenServices.createToken(req,expiresIn)
    const request = {
@@ -11,7 +11,10 @@ router.post("/", (req,res)=>{
       api:"/api/private/company",
       endpoint: req.get('origin')
    }
-   httpServices.postRequest(request)
+   const companyRes = await httpServices.postRequest(request)
+   const userRes = httpServices.postRequest({
+      
+   })
 })
 
 module.exports = router

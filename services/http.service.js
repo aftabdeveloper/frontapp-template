@@ -1,12 +1,10 @@
 const ajax = require("supertest")
 
-const postRequest = (req)=>{
-    ajax(req.endpoint)
+const postRequest = async (req)=>{
+    const postRes = await ajax(req.endpoint)
     .post(req.api)
-    .send({token:req.token})
-    .end((err,dataRes)=>{
-         console.log(dataRes.body)
-    })
+    .send({token:req.token});
+    return postRes;
 }
 
 module.exports = {

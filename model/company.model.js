@@ -31,9 +31,7 @@ const companySchema = new Schema({
      }
      const counts = await mongoose.model('Company').countDocuments(query)
      if(counts > 0) {
-         res.status(409).json({
-            message: "Company already exists"
-         })
+        throw next("Company already exists")
      }
      else{
          next()
@@ -46,7 +44,7 @@ const companySchema = new Schema({
      }
      const counts = await mongoose.model('Company').countDocuments(query)
      if(counts > 0) {
-         res.status(409).send("Email already exists")
+        throw next("Company email already exists")
      }
      else{
          next()

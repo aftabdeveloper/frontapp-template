@@ -38,7 +38,9 @@ const verifyToken = (req)=>{
     }
     catch(err)
     {
-
+        return {
+            isVerified: false
+        }
     }
 }
 
