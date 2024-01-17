@@ -5,6 +5,12 @@ const encrypt = async (data)=>{
     return encryptedData;
 }
 
+const decrypt = async(hashPassword,typedPassword)=>{
+    const decryptedData = await bcrypt.compare(typedPassword,hashPassword)
+    return decryptedData;
+}
+
 module.exports = {
-    encrypt: encrypt
+    encrypt: encrypt,
+    decrypt: decrypt
 }

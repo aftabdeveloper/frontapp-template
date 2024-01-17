@@ -34,7 +34,21 @@ const getRecordByQuery = async (req,res)=>{
             email: token.data.email
         }
         const response = await Company.find(query)
-        console.log(response)
+        if(response.length)
+        {
+            res.status(200).json({
+                isCompanyExist: true,
+                message: "Company exists",
+                data: response
+            })
+        }
+        else
+        {
+            res.status(404).json({
+                isCompanyExist: false,
+                message: "Company not found",
+            })
+        }
     }
     else{
         res.status(401).json({

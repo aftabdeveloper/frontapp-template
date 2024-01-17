@@ -6,8 +6,8 @@ router.post("/", async (req,res)=>{
     await userController.createUser(req,res)
 })
 
-router.get("/", async (req,res)=>{
-    await userController.getUser(req,res)
+router.get("/:query", async (req,res)=>{
+    await userController.getUserByQuery(req,res)
 })
 
 module.exports = router

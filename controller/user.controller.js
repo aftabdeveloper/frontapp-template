@@ -26,14 +26,38 @@ const createUser = async (req,res)=>{
     }
 }
 
-const getUser = (req,res)=>{
-    console.log(req.text)
-    res.status(200).json({
-        message: "user gets"
-    })
+const getUserByQuery = async (req,res)=>{
+    const token = tokenServices.verifyToken(req)
+    if(token.isVerified)
+    {
+        const query = {
+            uid: token.data.uid
+        }
+        const userRes = await User.find(query)
+        if(userRes)
+        {
+            res.status(200).json({
+                isUserExist: true,
+                message: "User found",
+                data: userRes
+            })
+        }
+        else{
+            res.status(404).json({
+                isUserExist: false,
+                message: "User not found"
+            })  
+        }
+    }
+    else
+    {
+        res.status(401).json({
+            message: "Permission denied"
+        })
+    }
 }
 
 module.exports = {
     createUser: createUser,
-    getUser: getUser
+    getUserByQuery: getUserByQuery
 }

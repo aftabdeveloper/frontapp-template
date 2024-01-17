@@ -25,7 +25,10 @@ $(document).ready(()=>{
             processData: false,
             contentType: false,
             success: (response)=>{
-                console.log(response)
+                if(response.isLogged)
+                {
+                    window.location = "/profile"
+                }
             },
             error: (err)=>{
                 console.log(err)
