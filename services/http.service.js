@@ -7,6 +7,14 @@ const postRequest = async (req)=>{
     return postRes;
 }
 
+const getRequest = async (req)=>{
+    const getRes = await ajax(req.endpoint)
+    .get(req.api+"/"+req.token)
+    .set({"X-Auth-Token": req.token})
+    return getRes;
+}
+
 module.exports = {
-    postRequest: postRequest
+    postRequest: postRequest,
+    getRequest: getRequest
 }

@@ -15,4 +15,22 @@ $(document).ready(()=>{
             }
         })
     })
+// login request
+    $("#login-form").submit((e)=>{
+        e.preventDefault()
+        $.ajax({
+            type: "POST",
+            url: "api/login",
+            data: new FormData(e.target),
+            processData: false,
+            contentType: false,
+            success: (response)=>{
+                console.log(response)
+            },
+            error: (err)=>{
+                console.log(err)
+            }
+        })
+    })
+
 })

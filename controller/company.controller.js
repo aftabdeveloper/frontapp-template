@@ -25,6 +25,24 @@ const createCompany = async (req,res)=>{
             }
         }
 }
+
+const getRecordByQuery = async (req,res)=>{
+    const token = tokenServices.verifyToken(req)
+    
+    if(token.isVerified){
+        const query = {
+            email: token.data.email
+        }
+        const response = await Company.find(query)
+        console.log(response)
+    }
+    else{
+        res.status(401).json({
+            message:"Permission denied"
+        })
+    }
+}
  module.exports = {
-    createCompany: createCompany
+    createCompany: createCompany,
+    getRecordByQuery: getRecordByQuery
  }

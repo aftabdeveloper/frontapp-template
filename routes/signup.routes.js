@@ -13,19 +13,25 @@ router.post("/", async (req,res)=>{
       endpoint: req.get('origin')
    }
    const companyRes = await httpServices.postRequest(request)
-   const {data:{_id}} = companyRes.body
-   const userToken = tokenServices.createCustomToken(req,{
-      body: {
-         uid: _id,
-         password: password
-      }
-   },expiresIn)
-   const userRes = await httpServices.postRequest({
-      token: userToken,
-      api: "/api/private/user",
-      endpoint: req.get('origin')
-   })
-   console.log(userRes.body)
+   if(companyRes.body.isCompanyCreated)
+   {
+      const {data:{_id}} = companyRes.body
+      const userToken = tokenServices.createCustomToken(req,{
+         body: {
+            uid: _id,
+            password: password
+         }
+      },expiresIn)
+      const userPostRes = await httpServices.postRequest({
+         token: userToken,
+         api: "/api/private/user",
+         endpoint: req.get('origin')
+      })   
+   }
+   else
+   {
+      res.json(companyRes)
+   }
 })
 
 module.exports = router
