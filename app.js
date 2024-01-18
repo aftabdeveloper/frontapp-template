@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/",indexRoute)
 app.use("/api/signup",signupRoute)
 app.use("/api/login",loginRoute)
-app.use("/api/profile",profileRoute)
+app.use("/profile",profileRoute)
 
 // handle security before entry data to database
 app.use((req,res,next)=>{
