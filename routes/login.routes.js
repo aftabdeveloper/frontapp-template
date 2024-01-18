@@ -36,7 +36,7 @@ router.post("/", async (req,res)=>{
                 }
                 const secondsInSevenDays = 604800
                 const token = tokenServices.createCustomToken(req,query,secondsInSevenDays)
-                res.cookie("authToken",token)
+                res.cookie("authToken",token,{maxAge:secondsInSevenDays})
                 res.status(200).json({
                     isLogged: true,
                     message: "Success"
@@ -45,21 +45,18 @@ router.post("/", async (req,res)=>{
             else
             {
                 res.status(401).json({
+                    isLogged: false,
                     message: "wrong password"
                 })
             }
         }
         else
         {
-            res.status(404).json({
-                message: "user not fond"
-            })  
+            res.status(userRes.status).json(userRes.body)  
         }
     }
     else{
-        res.status(404).json({
-            message: "Company not fond"
-        })
+        res.status(companyRes.status).json(companyRes.body)
     }
     
 })

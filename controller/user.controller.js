@@ -57,7 +57,21 @@ const getUserByQuery = async (req,res)=>{
     }
 }
 
+const createLog = (req,res)=>{
+    const token = tokenServices.verifyToken(req)
+    if(token.isVerified)
+    {
+        console.log("Accepted")
+    }
+    else
+    {
+        res.status(401).json({
+            message: "Permission denied"
+        })
+    }
+}
 module.exports = {
     createUser: createUser,
-    getUserByQuery: getUserByQuery
+    getUserByQuery: getUserByQuery,
+    createLog: createLog
 }

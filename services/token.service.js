@@ -30,9 +30,17 @@ const createCustomToken = (req,data,expiresIn)=>{
 
 const verifyToken = (req)=>{
     let token = ""
+    console.log(req)
     if(req.method === "GET")
     {
-        token = req.headers['x-auth-token']
+        if(req.headers['x-auth-token'])
+        {
+            token = req.headers['x-auth-token']
+        }
+        else
+        {
+            token = req.cookies.authToken
+        }
     }
     else 
     {
