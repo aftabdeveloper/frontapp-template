@@ -10,6 +10,8 @@ const profileRoute = require("./routes/profile.routes")
 const companyRoute = require("./routes/company.routes")
 const userRoute = require("./routes/user.routes")
 const tokenServices = require("./services/token.service")
+const authController = require("./controller/auth.controller")
+
 const multer = require("multer")
 const multipart = multer().none()
 const app = express();
@@ -33,17 +35,26 @@ app.use("/api/login",loginRoute)
 app.use((req,res,next)=>{
   const tmp = tokenServices.verifyToken(req)
   if(tmp.isVerified) {
+    //user is valid
     next()
   }
   else{
     res.clearCookie("authToken")
-    res.status(401)
     res.redirect("/")
   }
 })
+
+const autoLogger = ()=>{
+  return async (req,res,next)=>{
+    const isLogged = await authController.checkUserLog(req)
+    if(isLogged) return next()
+    res.clearCookie("authToken")
+    res.redirect("/")
+  }
+}
 app.use("/api/private/company", companyRoute)
 app.use("/api/private/user",userRoute)
-app.use("/profile",profileRoute)
+app.use("/profile",autoLogger(),profileRoute)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

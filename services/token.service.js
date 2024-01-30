@@ -8,7 +8,6 @@ const createToken = (req,expiresIn)=>{
     const endpoint = req.get('origin')
     const api = req.originalUrl;
     const iss = endpoint+api
-    console.log(endpoint)
     const token = jwt.sign({
         iss: iss,
         data: formData
@@ -30,7 +29,6 @@ const createCustomToken = (req,data,expiresIn)=>{
 
 const verifyToken = (req)=>{
     let token = ""
-    console.log(req)
     if(req.method === "GET")
     {
         if(req.headers['x-auth-token'])

@@ -12,7 +12,6 @@ router.post("/", async (req,res)=>{
         api: "/api/private/company",
         endpoint: req.get("origin")
     })
-
     if(companyRes.body.isCompanyExist){
         const query = {
             body: {
@@ -20,13 +19,20 @@ router.post("/", async (req,res)=>{
             }
         }
         const token = tokenServices.createCustomToken(req,query,expiresIn)
-        const userRes = await httpService.getRequest({
+        const passRes = await httpService.getRequest({
             token: token,
             api: "/api/private/user",
             endpoint: req.get('origin')
         })
-        const hashPassword = userRes.body.data[0].password
-        if(userRes.body.isUserExist){
+        //    // single device login
+        //    if(passRes.body.data[0].isLogged){
+        //     res.status(406).json({
+        //         message: "Please logout from other device"
+        //     })
+        //     return false
+        // }
+        const hashPassword = passRes.body.data[0].password
+        if(passRes.body.isUserExist){
            const isLogged = await bcryptService.decrypt(hashPassword,req.body.password)
             if(isLogged){
                 const query = {
@@ -34,9 +40,15 @@ router.post("/", async (req,res)=>{
                         uid: companyRes.body.data[0]._id
                     }
                 }
-                const secondsInSevenDays = 604800
-                const token = tokenServices.createCustomToken(req,query,secondsInSevenDays)
-                res.cookie("authToken",token,{maxAge:secondsInSevenDays})
+                const secondsInOneDays = 86400
+                const authToken = tokenServices.createCustomToken(req,query,secondsInOneDays)
+                // update token in databases also
+                const dbToken = await httpService.putRequest({
+                    token: authToken,
+                    api: "/api/private/user",
+                    endpoint: req.get("origin")
+                })
+                res.cookie("authToken",authToken,{maxAge:(secondsInOneDays*1000)})
                 res.status(200).json({
                     isLogged: true,
                     message: "Success"
@@ -58,7 +70,6 @@ router.post("/", async (req,res)=>{
     else{
         res.status(companyRes.status).json(companyRes.body)
     }
-    
 })
 
 module.exports = router

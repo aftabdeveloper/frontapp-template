@@ -16,6 +16,9 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    token: String,
+    isLogged: Boolean,
+    expiresIn: Number,
     updatedAt: {
         type: Date,
         default: Date.now

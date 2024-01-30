@@ -10,4 +10,8 @@ router.get("/:query", async (req,res)=>{
     await userController.getUserByQuery(req,res)
 })
 
+router.put("/:id", async (req,res)=>{
+    await userController.createLog(req,res)
+})
+
 module.exports = router

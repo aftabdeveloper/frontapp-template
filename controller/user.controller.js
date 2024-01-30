@@ -57,11 +57,27 @@ const getUserByQuery = async (req,res)=>{
     }
 }
 
-const createLog = (req,res)=>{
+const createLog = async (req,res)=>{
     const token = tokenServices.verifyToken(req)
     if(token.isVerified)
     {
-        console.log("Accepted")
+        const query = {
+            uid: token.data.uid
+        }
+
+        const data = {
+            token: req.body.token,
+            expiresIn: 86400,
+            isLogged: true,
+            updatedAt: Date.now()
+        }
+
+        await User.updateOne(query,data)
+        res.status(201).json({
+            message: "Token updatd",
+            isLogged: true
+        })
+
     }
     else
     {

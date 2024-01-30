@@ -99,6 +99,11 @@ $(document).ready(()=>{
           $(".company-password").addClass("border border-danger");
           $(".password-error").html("Wrong password !");
         }
+        else if(error.status == 406)
+        {
+          $(".company-password").addClass("border border-danger");
+          $(".password-error").html(error.responseJSON.message);
+        }
         else{
           alert("Internal server error");
         }
