@@ -17,7 +17,7 @@ const createToken = (req,expiresIn)=>{
 
 const createCustomToken = (req,data,expiresIn)=>{
     const formData = data.body
-    const endpoint = req.get('origin')
+    const endpoint = req.get('origin') || "http://"+req.get('host')
     const api = req.originalUrl;
     const iss = endpoint+api
     const token = jwt.sign({

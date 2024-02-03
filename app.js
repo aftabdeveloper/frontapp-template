@@ -46,7 +46,7 @@ app.use((req,res,next)=>{
 
 const autoLogger = ()=>{
   return async (req,res,next)=>{
-    const isLogged = await authController.checkUserLog(req)
+    const isLogged = await authController.checkUserLog(req,res)
     if(isLogged) return next()
     res.clearCookie("authToken")
     res.redirect("/")
