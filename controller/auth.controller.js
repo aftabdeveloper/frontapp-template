@@ -1,5 +1,6 @@
 const tokenServices = require("../services/token.service")
 const User = require("../model/user.model")
+const { response } = require("../app")
 
 const refreshToken = async (uid,req)=>{
     const options = {
@@ -39,6 +40,37 @@ const checkUserLog = async (req,res)=>{
     }
 }
 
+const logout = async (req,res)=>{
+    const tokenData = tokenServices.verifyToken(req)
+    if(tokenData.isVerified)
+    {
+        const query = {
+            token:req.cookies.authToken
+        }
+        const updateMe = {
+            isLogged: false,
+            updatedAt: Date.now()
+        }
+        const userRes = await User.updateOne(query,updateMe)
+        if(userRes.nModified)
+        {
+            res.clearCookie("authToken")
+            res.redirect("/")
+        }
+        else
+        {
+            res.redirect("/profile")
+        }
+    }
+    else
+    {
+        res.status(401).json({
+            message:"Permission denied"
+        })
+    }
+}
+
 module.exports = {
-    checkUserLog: checkUserLog
+    checkUserLog: checkUserLog,
+    logout: logout
 }

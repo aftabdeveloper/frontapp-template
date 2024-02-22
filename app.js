@@ -6,6 +6,7 @@ const logger = require('morgan');
 const indexRoute = require("./routes/index.routes")
 const signupRoute = require("./routes/signup.routes")
 const loginRoute = require("./routes/login.routes")
+const logoutRoute = require("./routes/logout.routes")
 const profileRoute = require("./routes/profile.routes")
 const companyRoute = require("./routes/company.routes")
 const userRoute = require("./routes/user.routes")
@@ -54,6 +55,7 @@ const autoLogger = ()=>{
 }
 app.use("/api/private/company", companyRoute)
 app.use("/api/private/user",userRoute)
+app.use("/logout",logoutRoute)
 app.use("/profile",autoLogger(),profileRoute)
 
 // catch 404 and forward to error handler
